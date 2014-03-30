@@ -1,0 +1,31 @@
+#complist
+{
+position:relative;
+/*float:right;
+*/
+top:-350px;
+right:-300px;
+width:500px;
+}
+
+#filters
+{
+position:relative;
+/*float:right;*/
+top:50px;
+/*right:3px;*/
+width:200px;
+}
+
+#headpic
+{
+	height:180px; 
+	width:1000px;
+}
+
+#sign
+{
+	position:relative;
+	right:250px;
+	top:-30px;
+}

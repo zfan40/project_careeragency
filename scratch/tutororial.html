@@ -1,0 +1,40 @@
+<?php
+	include "common.php";
+
+	echo "<u>List of all users:</u><br/>";
+	$results = queryDB("SELECT authorName FROM linkex_authors");
+	while( $eachReturn = mysql_fetch_assoc($results) ) {
+		echo $eachReturn['authorName']."<br/>";
+	}
+
+	echo "<br/>";
+	echo "<u>Posts with authors:</u><br/>";
+	$results = queryDB("SELECT authorName,postBody FROM linkex_posts,linkex_authors ".
+			        "WHERE linkex_posts.authorID=linkex_authors.authorID");
+ 	
+	while( $eachReturn = mysql_fetch_assoc($results) ) {
+		echo $eachReturn['authorName'] . ": " . $eachReturn['postBody'] . "<br/>";
+	}
+
+	echo "<br/>";
+	echo "<u>Posts with authors, listing tags for each post:</u><br/>";
+	$results = queryDB("SELECT * FROM linkex_posts,linkex_authors WHERE ".
+				 	"linkex_posts.authorID=linkex_authors.authorID");
+	while( $eachReturn = mysql_fetch_assoc($results) ) {
+		echo $eachReturn['authorName'].": ".$eachReturn['postBody']."<br/>";
+		echo "<b>Tags:</b> ";
+		$tagResults = queryDB("SELECT * FROM linkex_tagKey,linkex_tagLinks WHERE ".
+			"linkex_tagLinks.postID=".$eachReturn['postID']." AND ".
+			"linkex_tagKey.tagID=linkex_tagLinks.tagID");
+		if( mysql_num_rows($tagResults) == 0 ) {
+			echo "(none)";
+		} else {
+			$eachTag = mysql_fetch_assoc($tagResults);
+			echo $eachTag['tagName'];
+			while( $eachTag = mysql_fetch_assoc($tagResults) ) {
+				echo ", " . $eachTag['tagName'];
+			} // end of while over tags
+		} // end of else (meaning tags were found)
+		echo "<br/><br/>";
+	} // end of while over posts
+?>
